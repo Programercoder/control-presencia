@@ -1,4 +1,4 @@
-package es.ulpgc.control_presencia.backend;
+package es.ulpgc.control_presencia.backend.domain;
 
 import org.junit.jupiter.api.Test;
 
