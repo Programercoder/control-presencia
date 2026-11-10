@@ -14,4 +14,10 @@ public record Assignment(String personId, String scheduleId, LocalDate from, Loc
     public boolean covers(LocalDate date) {
         return !date.isBefore(from) && (to == null || !date.isAfter(to));
     }
+
+    public boolean overlaps(Assignment other) {
+        boolean thisStartsBeforeOtherEnds = other.to == null || !from.isAfter(other.to);
+        boolean otherStartsBeforeThisEnds = to == null || !other.from.isAfter(to);
+        return thisStartsBeforeOtherEnds && otherStartsBeforeThisEnds;
+    }
 }

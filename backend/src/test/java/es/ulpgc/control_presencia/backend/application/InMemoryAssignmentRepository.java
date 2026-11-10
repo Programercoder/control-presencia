@@ -19,6 +19,11 @@ public class InMemoryAssignmentRepository implements AssignmentRepository {
     }
 
     @Override
+    public List<Assignment> findByPerson(String personId) {
+        return data.stream().filter(a -> a.personId().equals(personId)).toList();
+    }
+
+    @Override
     public void save(Assignment assignment) {
         data.add(assignment);
     }
