@@ -34,4 +34,12 @@ public final class SplitSchedule implements Schedule {
     public List<TimeSlot> slotsFor(LocalDate date) {
         return days.contains(date.getDayOfWeek()) ? slots : List.of();
     }
+
+    public Set<DayOfWeek> days() {
+        return days;
+    }
+
+    public List<TimeSlot> slots() {
+        return slots;
+    }
 }

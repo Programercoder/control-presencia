@@ -19,9 +19,21 @@ public final class ContinuousSchedule implements Schedule {
         this.slot = slot;
     }
 
-    @Override public String name() { return name; }
+    @Override
+    public String name() {
+        return name;
+    }
 
-    @Override public List<TimeSlot> slotsFor(LocalDate date) {
+    @Override
+    public List<TimeSlot> slotsFor(LocalDate date) {
         return days.contains(date.getDayOfWeek()) ? List.of(slot) : List.of();
+    }
+
+    public Set<DayOfWeek> days() {
+        return days;
+    }
+
+    public TimeSlot slot() {
+        return slot;
     }
 }
