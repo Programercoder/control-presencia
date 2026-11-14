@@ -9,8 +9,13 @@ import es.ulpgc.control_presencia.backend.application.port.out.TimeProvider;
 import es.ulpgc.control_presencia.backend.domain.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class GetPresenceStatusService implements GetPresenceStatusUseCase {
+    /** Hours around the scheduled slots in which clock events still belong to that shift. */
+    static final long WINDOW_MARGIN_HOURS = 4;
+
     private final PersonRepository persons;
     private final AssignmentRepository assignments;
     private final ScheduleRepository schedules;
@@ -36,8 +41,18 @@ public class GetPresenceStatusService implements GetPresenceStatusUseCase {
                 .orElseThrow(() -> new ScheduleNotAssignedException("No schedule assigned on " + date));
         Schedule schedule = schedules.findById(assignment.scheduleId())
                 .orElseThrow(() -> new ScheduleNotAssignedException("Schedule not found: " + assignment.scheduleId()));
-        // Window includes the next day so overnight on-call clock-outs are captured
-        var dayEvents = events.findBetween(personId, date.atStartOfDay(), date.plusDays(2).atStartOfDay());
-        return evaluator.evaluate(schedule, date, dayEvents, time.now());
+
+        List<TimeSlot> slots = schedule.slotsFor(date);
+        LocalDateTime from;
+        LocalDateTime to;
+        if (slots.isEmpty()) {
+            from = date.atStartOfDay();
+            to = date.plusDays(1).atStartOfDay();
+        } else {
+            from = slots.get(0).startOn(date).minusHours(WINDOW_MARGIN_HOURS);
+            to = slots.get(slots.size() - 1).endOn(date).plusHours(WINDOW_MARGIN_HOURS);
+        }
+        var shiftEvents = events.findBetween(personId, from, to);
+        return evaluator.evaluate(schedule, date, shiftEvents, time.now());
     }
 }
