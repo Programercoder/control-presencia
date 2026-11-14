@@ -108,6 +108,7 @@ Estados de presencia: `NO_SHIFT`, `PENDING`, `PRESENT`, `LATE`, `ABSENT`, `CLOCK
 - Horas trabajadas: suma de pares entrada/salida; una entrada abierta cuenta hasta "ahora".
 - Desviación: trabajadas menos esperadas.
 - Sin fichajes: `PENDING` hasta la tolerancia, `LATE` durante la jornada y `ABSENT` al terminar.
+- Ventana de fichajes: para evaluar una jornada solo se consideran los fichajes desde 4 horas antes del primer tramo hasta 4 horas después del último (así una guardia nocturna incluye su salida del día siguiente). Un fichaje fuera de esa ventana no cuenta en esa jornada.
 
 ## Modelo de datos (H2)
 
@@ -132,3 +133,14 @@ Base: `http://localhost:8080/api`. JSON en peticiones y respuestas.
 | `POST /assignments` | Asigna un horario a una persona | 201 |
 | `POST /clock-events` | Registra entrada o salida | 201 |
 | `GET /clock-events?personId&from&to` | Fichajes
+
+## Límites conocidos
+
+- Retraso medido solo contra el primer tramo del día y salida temprana solo contra el último.
+- Ventana de fichajes: solo cuentan los fichajes desde 4 horas antes del primer tramo hasta 4 horas después del último. Si alguien ficha la salida más tarde, esa jornada se muestra como `CLOCK_OUT_PENDING`.
+- Sin transacciones en los casos de uso: dos fichajes simultáneos de la misma persona podrían colarse.
+- Sin autenticación ni permisos: cualquiera puede fichar por cualquier persona.
+- Las asignaciones son por persona, no por grupo.
+- Las incidencias se calculan en cada consulta, no se persisten.
+- Los nombres de turno no pueden contener `#` ni `=` (formato de almacenamiento).
+- El instante del fichaje es el del servidor.
