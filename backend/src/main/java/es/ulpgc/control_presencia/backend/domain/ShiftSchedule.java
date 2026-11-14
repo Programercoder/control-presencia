@@ -4,11 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-/**
- * Cycle repeating every N days from a start date.
- * Example: [MORNING, MORNING, NIGHT, OFF, OFF]. An on-call duty is a shift
- * whose slot crosses midnight (20:00-08:00).
- */
+
 public final class ShiftSchedule implements Schedule {
     private final String name;
     private final LocalDate cycleStart;
