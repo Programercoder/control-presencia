@@ -2,6 +2,7 @@ package es.ulpgc.control_presencia.backend.config;
 
 import es.ulpgc.control_presencia.backend.application.port.out.AssignmentRepository;
 import es.ulpgc.control_presencia.backend.application.port.out.ClockEventRepository;
+import es.ulpgc.control_presencia.backend.application.port.out.JustificationRepository;
 import es.ulpgc.control_presencia.backend.application.port.out.PersonRepository;
 import es.ulpgc.control_presencia.backend.application.port.out.ScheduleRepository;
 import es.ulpgc.control_presencia.backend.application.port.out.TimeProvider;
@@ -10,6 +11,7 @@ import es.ulpgc.control_presencia.backend.domain.PresenceEvaluator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class UseCaseConfig {
@@ -21,8 +23,9 @@ public class UseCaseConfig {
 
     @Bean
     RegisterClockEventService registerClockEventService(PersonRepository persons, AssignmentRepository assignments,
-                                                        ClockEventRepository events, TimeProvider time) {
-        return new RegisterClockEventService(persons, assignments, events, time);
+                                                        ScheduleRepository schedules, ClockEventRepository events,
+                                                        TimeProvider time) {
+        return new RegisterClockEventService(persons, assignments, schedules, events, time);
     }
 
     @Bean
@@ -30,6 +33,26 @@ public class UseCaseConfig {
                                                       ScheduleRepository schedules, ClockEventRepository events,
                                                       TimeProvider time, PresenceEvaluator evaluator) {
         return new GetPresenceStatusService(persons, assignments, schedules, events, time, evaluator);
+    }
+
+    /** The presence status exposed to the API: base evaluation plus justifications. */
+    @Bean
+    @Primary
+    JustifiedPresenceService justifiedPresenceService(GetPresenceStatusService base,
+                                                      JustificationRepository justifications) {
+        return new JustifiedPresenceService(base, justifications);
+    }
+
+    @Bean
+    JustifyIncidentService justifyIncidentService(JustifiedPresenceService presence,
+                                                  JustificationRepository justifications, TimeProvider time) {
+        return new JustifyIncidentService(presence, justifications, time);
+    }
+
+    @Bean
+    ListJustificationsService listJustificationsService(PersonRepository persons,
+                                                        JustificationRepository justifications) {
+        return new ListJustificationsService(persons, justifications);
     }
 
     @Bean

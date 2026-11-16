@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Consulta - control de presencia</title>
-    <link rel="stylesheet" href="../frontend-shared/style.css">
+    <link rel="stylesheet" href="/frontend-shared/style.css">
+    <style>
+        button.small { padding: 4px 10px; font-size: 12px; background: #6b7280; margin-left: 6px; }
+        .justified { color: #166534; }
+        .incident { margin-bottom: 4px; }
+    </style>
 </head>
 <body>
 <header>
     <h1>Consulta de presencia e incidencias</h1>
     <nav>
-        <a href="../frontend-fichaje/index.html">Fichar</a>
-        <a href="../frontend-consulta/index.html">Consulta</a>
-        <a href="../frontend-horarios/index.html">Horarios</a>
+        <a href="/frontend-fichaje/index.html">Fichar</a>
+        <a href="/frontend-consulta/index.html">Consulta</a>
+        <a href="/frontend-horarios/index.html">Horarios</a>
     </nav>
 </header>
 <main>
@@ -23,6 +28,7 @@
             <div><label for="person">Persona</label><select id="person"></select></div>
             <div><label for="from">Desde</label><input type="date" id="from"></div>
             <div><label for="to">Hasta</label><input type="date" id="to"></div>
+            <div><label for="author">Responsable</label><input id="author" value="Responsable RRHH"></div>
             <button id="search">Consultar</button>
         </div>
     </div>
@@ -35,6 +41,7 @@
             <div><span>Trabajados</span><strong id="worked">-</strong></div>
             <div><span>Desviación</span><strong id="deviation">-</strong></div>
             <div><span>Incidencias</span><strong id="incidentCount">-</strong></div>
+            <div><span>Justificadas</span><strong id="justifiedCount">-</strong></div>
         </div>
     </div>
 
@@ -47,6 +54,14 @@
     </div>
 
     <div class="card">
+        <h2 style="margin-top: 0;">Justificaciones registradas</h2>
+        <table>
+            <thead><tr><th>Día</th><th>Incidencia</th><th>Motivo</th><th>Responsable</th><th>Registrada</th></tr></thead>
+            <tbody id="justifications"></tbody>
+        </table>
+    </div>
+
+    <div class="card">
         <h2 style="margin-top: 0;">Fichajes</h2>
         <table>
             <thead><tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Origen</th></tr></thead>
@@ -54,6 +69,6 @@
         </table>
     </div>
 </main>
-<script type="module" src="./main.js"></script>
+<script type="module" src="/frontend-consulta/main.js"></script>
 </body>
 </html>

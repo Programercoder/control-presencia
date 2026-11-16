@@ -32,10 +32,7 @@ async function request(baseUrl, path, options = {}) {
   return body;
 }
 
-/**
- * HTTP adapter for the backend contract. Any object exposing the same
- * methods can replace it (for example a mock for tests).
- */
+
 export function createHttpApi(baseUrl) {
   const post = (path, data) => request(baseUrl, path, { method: "POST", body: JSON.stringify(data) });
   const get = (path) => request(baseUrl, path);
@@ -49,6 +46,9 @@ export function createHttpApi(baseUrl) {
       get("/clock-events?personId=" + encodeURIComponent(personId) + "&from=" + from + "&to=" + to),
     getPresence: (personId, date) =>
       get("/presence/" + encodeURIComponent(personId) + (date ? "?date=" + date : "")),
+    justifyIncident: (justification) => post("/justifications", justification),
+    listJustifications: (personId, from, to) =>
+      get("/justifications?personId=" + encodeURIComponent(personId) + "&from=" + from + "&to=" + to),
   };
 }
 

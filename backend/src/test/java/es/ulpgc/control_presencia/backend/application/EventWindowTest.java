@@ -41,7 +41,7 @@ class EventWindowTest {
                 List.of(Shift.of("ON_CALL", new TimeSlot(LocalTime.of(20, 0), LocalTime.of(8, 0))), Shift.off())));
         assignments.save(new Assignment("p1", "office", MONDAY, null));
         assignments.save(new Assignment("p2", "hospital", MONDAY, null));
-        register = new RegisterClockEventService(persons, assignments, events, time);
+        register = new RegisterClockEventService(persons, assignments, schedules, events, time);
         status = new GetPresenceStatusService(persons, assignments, schedules, events, time,
                 new PresenceEvaluator(5));
     }

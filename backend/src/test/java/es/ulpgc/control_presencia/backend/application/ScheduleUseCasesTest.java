@@ -101,7 +101,7 @@ class ScheduleUseCasesTest {
     void queriesEventsByPeriod() {
         define.define("office", office());
         assign.assign("p1", "office", MONDAY, null);
-        var register = new RegisterClockEventService(persons, assignments, events, time);
+        var register = new RegisterClockEventService(persons, assignments, schedules, events, time);
         register.register("p1", ClockEventType.CLOCK_IN, EventSource.WEB);
         time.set(MONDAY.atTime(15, 0));
         register.register("p1", ClockEventType.CLOCK_OUT, EventSource.WEB);

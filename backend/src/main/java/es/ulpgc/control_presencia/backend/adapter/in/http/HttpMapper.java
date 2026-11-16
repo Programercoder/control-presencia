@@ -12,6 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 final class HttpMapper {
     private HttpMapper() { }
@@ -48,10 +49,17 @@ final class HttpMapper {
 
     static PresenceResponse toResponse(String personId, LocalDate date, PresenceResult r) {
         List<IncidentResponse> incidents = r.incidents().stream()
-                .map(i -> new IncidentResponse(i.type().name(), i.minutes(), i.description()))
+                .map(i -> new IncidentResponse(i.type().name(), i.minutes(), i.description(), i.justification()))
                 .toList();
         return new PresenceResponse(personId, date.toString(), r.status().name(),
                 r.expectedMinutes(), r.workedMinutes(), r.deviationMinutes(), incidents);
+    }
+
+    // ---------- justifications ----------
+
+    static JustificationResponse toResponse(Justification j) {
+        return new JustificationResponse(j.personId(), j.date(), j.incidentType().name(), j.reason(),
+                j.author(), j.recordedAt().toString());
     }
 
     // ---------- schedules ----------
@@ -59,7 +67,7 @@ final class HttpMapper {
     static ScheduleDefinition toDefinition(ScheduleRequest r) {
         ScheduleType type = parseEnum(ScheduleType.class, r.type(), "type");
         Set<DayOfWeek> days = r.days() == null ? Set.of()
-                : r.days().stream().map(d -> parseEnum(DayOfWeek.class, d, "days")).collect(java.util.stream.Collectors.toSet());
+                : r.days().stream().map(d -> parseEnum(DayOfWeek.class, d, "days")).collect(Collectors.toSet());
         return new ScheduleDefinition(type, r.name(), days, toSlots(r.slots()), r.cycleStart(), toShifts(r.cycle()));
     }
 

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
@@ -39,7 +38,7 @@ class ClockEventUseCasesTest {
                 new TimeSlot(LocalTime.of(8, 0), LocalTime.of(15, 0))));
         assignments.save(new Assignment("p1", "office", LocalDate.of(2026, 11, 1), null));
 
-        register = new RegisterClockEventService(persons, assignments, events, time);
+        register = new RegisterClockEventService(persons, assignments, schedules, events, time);
         status = new GetPresenceStatusService(persons, assignments, schedules, events, time,
                 new PresenceEvaluator(5));
     }
@@ -102,5 +101,12 @@ class ClockEventUseCasesTest {
     @Test
     void statusWithoutAssignmentIsRejected() {
         assertThrows(ScheduleNotAssignedException.class, () -> status.getStatus("p2", MONDAY));
+    }
+
+    @Test
+    void clockInOnDayWithoutShiftIsRejected() {
+        time.set(MONDAY.plusDays(1).atTime(8, 0)); // Tuesday: the office schedule only works Mondays
+        assertThrows(NoShiftTodayException.class,
+                () -> register.register("p1", ClockEventType.CLOCK_IN, EventSource.WEB));
     }
 }

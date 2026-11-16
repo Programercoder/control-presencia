@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-
+/**
+ * Translates domain errors into HTTP status codes with a common body: {"code": "...", "message": "..."}.
+ * 404 not found, 409 conflict, 422 invalid or incoherent data, 400 malformed request.
+ */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
@@ -19,7 +22,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler({DuplicateClockEventException.class, DuplicateScheduleException.class,
-            AssignmentOverlapException.class})
+            AssignmentOverlapException.class, DuplicateJustificationException.class})
     ResponseEntity<ApiError> conflict(DomainException e) {
         return build(HttpStatus.CONFLICT, e);
     }

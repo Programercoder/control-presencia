@@ -10,7 +10,7 @@ public final class ApiDtos {
 
     public record ClockEventResponse(String personId, String timestamp, String type, String source) { }
 
-    public record IncidentResponse(String type, long minutes, String description) { }
+    public record IncidentResponse(String type, long minutes, String description, String justification) { }
 
     public record PresenceResponse(String personId, String date, String status,
                                    long expectedMinutes, long workedMinutes, long deviationMinutes,
@@ -31,4 +31,10 @@ public final class ApiDtos {
     public record AssignmentResponse(String personId, String scheduleId, LocalDate from, LocalDate to) { }
 
     public record PersonResponse(String id, String name) { }
+
+    public record JustificationRequest(String personId, LocalDate date, String incidentType,
+                                       String reason, String author) { }
+
+    public record JustificationResponse(String personId, LocalDate date, String incidentType,
+                                        String reason, String author, String recordedAt) { }
 }
