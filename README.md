@@ -134,6 +134,17 @@ Base: `http://localhost:8080/api`. JSON en peticiones y respuestas.
 | `POST /clock-events` | Registra entrada o salida | 201 |
 | `GET /clock-events?personId&from&to` | Fichajes
 
+
+### Registro de asistencia
+![Registro de asistencia](screenshots/captura-fichaje.png)
+
+### Consulta de presencia e incidencias
+![Consulta](screenshots/captura-consulta.png)
+
+### Definición de horarios
+![Definición de horarios](screenshots/captura-horarios.png)
+
+
 ## Límites conocidos
 
 - Retraso medido solo contra el primer tramo del día y salida temprana solo contra el último.
@@ -144,3 +155,5 @@ Base: `http://localhost:8080/api`. JSON en peticiones y respuestas.
 - Las incidencias se calculan en cada consulta, no se persisten.
 - Los nombres de turno no pueden contener `#` ni `=` (formato de almacenamiento).
 - El instante del fichaje es el del servidor.
+- El frontend de consulta hace una petición por día del periodo (máximo 62 días).
+- Los horarios y asignaciones no se pueden editar ni borrar desde la interfaz, solo crear.
