@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fichaje - control de presencia</title>
+    <link rel="stylesheet" href="../frontend-shared/style.css">
+</head>
+<body>
+<header>
+    <h1>Registro de asistencia</h1>
+    <nav>
+        <a href="../frontend-fichaje/index.html">Fichar</a>
+        <a href="../frontend-consulta/index.html">Consulta</a>
+        <a href="../frontend-horarios/index.html">Horarios</a>
+    </nav>
+</header>
+<main>
+    <div id="message" class="message hidden"></div>
+
+    <div class="card">
+        <label for="person">Persona</label>
+        <select id="person"></select>
+        <div class="row" style="margin-top: 16px;">
+            <button id="clockIn" class="in">Fichar entrada</button>
+            <button id="clockOut" class="out">Fichar salida</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Estado de hoy</h2>
+        <span id="status" class="badge">-</span>
+        <div class="stats">
+            <div><span>Esperados</span><strong id="expected">-</strong></div>
+            <div><span>Trabajados</span><strong id="worked">-</strong></div>
+            <div><span>Desviación</span><strong id="deviation">-</strong></div>
+        </div>
+        <ul id="incidents"></ul>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Fichajes de hoy</h2>
+        <table>
+            <thead><tr><th>Hora</th><th>Tipo</th><th>Origen</th></tr></thead>
+            <tbody id="events"></tbody>
+        </table>
+    </div>
+</main>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
