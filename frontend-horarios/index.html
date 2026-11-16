@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Horarios - control de presencia</title>
+    <link rel="stylesheet" href="../frontend-shared/style.css">
+    <style>
+        .days label { display: inline-flex; align-items: center; gap: 4px; font-weight: normal; margin-right: 12px; }
+        .days input { width: auto; }
+        .slot-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .slot-row input { flex: 1; }
+        button.small { padding: 6px 12px; font-size: 13px; background: #6b7280; }
+        .field { margin-bottom: 14px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Definición de horarios</h1>
+    <nav>
+        <a href="../frontend-fichaje/index.html">Fichar</a>
+        <a href="../frontend-consulta/index.html">Consulta</a>
+        <a href="../frontend-horarios/index.html">Horarios</a>
+    </nav>
+</header>
+<main>
+    <div id="message" class="message hidden"></div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Horarios existentes</h2>
+        <table>
+            <thead><tr><th>Id</th><th>Nombre</th><th>Tipo</th><th>Detalle</th></tr></thead>
+            <tbody id="schedules"></tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Nuevo horario</h2>
+        <div class="row field">
+            <div><label for="id">Id</label><input id="id" placeholder="shop"></div>
+            <div><label for="name">Nombre</label><input id="name" placeholder="Tienda"></div>
+            <div>
+                <label for="type">Tipo</label>
+                <select id="type">
+                    <option value="CONTINUOUS">Corrido (un tramo)</option>
+                    <option value="SPLIT">Partido (varios tramos)</option>
+                    <option value="SHIFTS">Turnos y guardias (ciclo)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="daysBox" class="field days">
+            <label>Días laborables</label>
+            <span id="days"></span>
+        </div>
+
+        <div id="slotsBox" class="field">
+            <label>Tramos (HH:mm)</label>
+            <div id="slots"></div>
+            <button id="addSlot" class="small" type="button">+ Tramo</button>
+        </div>
+
+        <div id="shiftsBox" class="field hidden">
+            <label for="cycleStart">Inicio del ciclo</label>
+            <input type="date" id="cycleStart" style="max-width: 220px; margin-bottom: 12px;">
+            <label>Turnos del ciclo, en orden (sin horas = libre; fin menor que inicio = guardia nocturna)</label>
+            <div id="shifts"></div>
+            <button id="addShift" class="small" type="button">+ Turno</button>
+        </div>
+
+        <button id="save">Guardar horario</button>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Asignar horario a una persona</h2>
+        <div class="row">
+            <div><label for="person">Persona</label><select id="person"></select></div>
+            <div><label for="schedule">Horario</label><select id="schedule"></select></div>
+            <div><label for="from">Desde</label><input type="date" id="from"></div>
+            <div><label for="to">Hasta (opcional)</label><input type="date" id="to"></div>
+            <button id="assign">Asignar</button>
+        </div>
+    </div>
+</main>
+<script type="module" src="./main.js"></script>
+</body>
+</html>

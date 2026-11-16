@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consulta - control de presencia</title>
+    <link rel="stylesheet" href="../frontend-shared/style.css">
+</head>
+<body>
+<header>
+    <h1>Consulta de presencia e incidencias</h1>
+    <nav>
+        <a href="../frontend-fichaje/index.html">Fichar</a>
+        <a href="../frontend-consulta/index.html">Consulta</a>
+        <a href="../frontend-horarios/index.html">Horarios</a>
+    </nav>
+</header>
+<main>
+    <div id="message" class="message hidden"></div>
+
+    <div class="card">
+        <div class="row">
+            <div><label for="person">Persona</label><select id="person"></select></div>
+            <div><label for="from">Desde</label><input type="date" id="from"></div>
+            <div><label for="to">Hasta</label><input type="date" id="to"></div>
+            <button id="search">Consultar</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Resumen del periodo</h2>
+        <div class="stats">
+            <div><span>Días con jornada</span><strong id="days">-</strong></div>
+            <div><span>Esperados</span><strong id="expected">-</strong></div>
+            <div><span>Trabajados</span><strong id="worked">-</strong></div>
+            <div><span>Desviación</span><strong id="deviation">-</strong></div>
+            <div><span>Incidencias</span><strong id="incidentCount">-</strong></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Estado por día</h2>
+        <table>
+            <thead><tr><th>Fecha</th><th>Estado</th><th>Trabajados</th><th>Desv.</th><th>Incidencias</th></tr></thead>
+            <tbody id="daily"></tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top: 0;">Fichajes</h2>
+        <table>
+            <thead><tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Origen</th></tr></thead>
+            <tbody id="events"></tbody>
+        </table>
+    </div>
+</main>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
