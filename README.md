@@ -157,3 +157,4 @@ Base: `http://localhost:8080/api`. JSON en peticiones y respuestas.
 - El instante del fichaje es el del servidor.
 - El frontend de consulta hace una petición por día del periodo (máximo 62 días).
 - Los horarios y asignaciones no se pueden editar ni borrar desde la interfaz, solo crear.
+- No hay calendario de festivos ni vacaciones: un festivo se evalúa como día laborable normal. Una ausencia en festivo puede marcarse como justificada manualmente.
