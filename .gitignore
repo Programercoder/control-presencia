@@ -1,0 +1,25 @@
+@"
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Maven / Java
+target/
+*.class
+*.jar
+*.war
+*.zip
+*.exe
+
+# Base de datos local H2
+data/
+*.mv.db
+*.trace.db
+
+# Temporales
+body.json
+*.log
+"@ | Set-Content -Encoding ascii .gitignore
