@@ -1,1 +1,7 @@
-{ "directoryListing": false }
+{
+  "redirects": [
+    { "source": "/", "destination": "/frontend-fichaje/index.html", "type": 302 }
+  ],
+  "directoryListing": false
+}
+

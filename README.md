@@ -33,6 +33,7 @@ npx serve . -l 5500 --no-clipboard
 
 | Módulo | URL |
 |---|---|
+| Inicio (redirige a fichar) | http://localhost:5500/ |
 | Registro de asistencia | http://localhost:5500/frontend-fichaje/index.html |
 | Consulta de presencia e incidencias | http://localhost:5500/frontend-consulta/index.html |
 | Definición de horarios | http://localhost:5500/frontend-horarios/index.html |
@@ -49,6 +50,7 @@ Configuración:
 - Tolerancia de entrada y salida: `presence.tolerance-minutes` (por defecto 5).
 - Los tests usan H2 en memoria (`src/test/resources/application.properties`) y no tocan la base real.
 - Los frontends usan rutas desde la raíz del servidor (`/frontend-shared/...`), por lo que deben servirse desde la raíz del repositorio.
+- Abre los frontends con `localhost`. `serve` también imprime una dirección de red (por ejemplo `192.168.x.x`) que no está soportada: CORS y la URL del backend apuntan a `localhost`.
 
 ## Estructura del repositorio
 
@@ -59,7 +61,9 @@ control-presencia/
 ├── frontend-fichaje/   registro de asistencia
 ├── frontend-consulta/  consulta de presencia e incidencias, justificaciones
 ├── frontend-horarios/  definición de horarios y asignaciones
-└── screenshots/        capturas de la verificación
+├── screenshots/        capturas de la verificación
+├── index.html          página de inicio que redirige al registro de asistencia
+└── serve.json          configuración de serve: redirección de / a fichar y sin listado de directorios
 ```
 
 ## Arquitectura de sistemas
@@ -106,6 +110,7 @@ flowchart LR
 ```
 
 El dominio no conoce nada de fuera, los casos de uso solo usan puertos y los adaptadores implementan los puertos. Los casos de uso no llevan anotaciones de Spring y se cablean en `UseCaseConfig`. El reloj es un puerto (`TimeProvider`) para probar retrasos sin depender de la hora real.
+Comprobado con búsqueda de imports sobre una copia clonada del repositorio: `domain/` y `application/` no importan `springframework`, `jakarta` ni `com.fasterxml`.
 
 ## Modelo de dominio
 
@@ -299,7 +304,8 @@ Encaja con el trabajo porque cubre las "incidencias justificadas" que sugiere el
 | Asignar un horario solapado | Rechazado: "The person already has a schedule in that period" (409) |
 | Crear horario partido `shop` desde la interfaz | Aparece en la lista junto a los de ejemplo |
 | Justificar una incidencia | Aparece como justificada, con autor y hora de registro |
-| Reinicio del backend | La justificación (registrada 2026-11-19 11:19:09) y los fichajes anteriores siguen en la consulta |
+| Reinicio del backend | Tras parar y arrancar el backend, la justificación (registrada 2026-11-19 11:19:09) y los fichajes del día 19 siguen en la consulta |
+| Copia limpia (`git clone` en otra carpeta) | `./mvnw test`: 33 tests correctos; el backend arranca con los datos de ejemplo |
 
 ![Antes del reinicio](screenshots/captura-persistencia-antes.png)
 ![Después del reinicio](screenshots/captura-persistencia-despues.png)
@@ -322,3 +328,4 @@ Encaja con el trabajo porque cubre las "incidencias justificadas" que sugiere el
 - El instante del fichaje es el del servidor.
 - El frontend de consulta hace una petición por día del periodo (máximo 62 días).
 - Solo una instancia del backend a la vez, y la ruta de la base de datos depende del directorio de arranque.
+- Los frontends se sirven con un servidor estático de desarrollo (`serve`), sin HTTPS ni autenticación; no está pensado para exponerse a una red.
